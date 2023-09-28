@@ -1,0 +1,75 @@
+{% extends 'store/store.html' %}
+
+{% load static %}
+
+{% block content %}
+
+
+
+<div class='container-fluid my-3 d-flex justify-content-center'>
+    <h2 class="text-danger"><b>Search Books </b></h2>
+    <form class="form-inline my-2 ml-5 my-lg-0" role='search', method='get', action="{% url 'home' %}">
+        <input class="form-control mr-sm-2" name='search' type="search" placeholder="Find yours" aria-label="Search">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>
+</div>
+{% if error_message %}
+    <p class="error-message text-danger text-center"><b>{{ error_message }} &#128519;</b></p>
+{% endif %}
+
+                <!-- Book List -->
+                <h3>Explore Available Books</h3>
+                <div class="row">
+                    {% for product in products %}
+                        <div class="col-lg-4 col-md-6 mb-4">
+                            <div class="card" style="height: 100%;">
+                                <img class="card-img-top" src="{{ product.image.url }}" alt="{{ product.name }}" style="object-fit: cover; height: 100px;">
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ product.name }}</h5>
+                                    <p class="card-text">Author: {{ product.author }}</p>
+                                    <p class="card-text">Price: ${{ product.price }}</p>
+                                    <a href="{% url 'product_detail' product.id %}" class="btn btn-primary">View</a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container mt-4">
+		<div class="row justify-content-center">
+			<div class="col-md-4">
+				<ul class="pagination justify-content-center">
+					{% if products.has_previous %}
+						<li class="page-item">
+							<a class="page-link" href="?page=1">&#8676; First</a>
+						</li>
+					{% endif %}
+					{% if products.has_previous %}
+						<li class="page-item">
+							<a class="page-link" href="?page={{ products.previous_page_number }}">&#8668; Previous</a>
+						</li>
+					{% endif %}
+					<li class="page-item disabled">
+						<span class="page-link">Page {{ products.number }} of {{ products.paginator.num_pages }}</span>
+					</li>
+					{% if books.has_next %}
+						<li class="page-item">
+							<a class="page-link" href="?page={{ products.next_page_number }}">Next &#8669;</a>
+						</li>
+					{% endif %}
+					{% if products.has_next %}
+						<li class="page-item">
+							<a class="page-link" href="?page={{ products.paginator.num_pages }}">Last &#8677;</a>
+						</li>
+					{% endif %}
+				</ul>
+			</div>
+		</div>
+	</div>
+	</div>
+
+{% endblock content %}

@@ -1,0 +1,20 @@
+{% extends 'store/store.html' %}
+{% load static %}
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-4">
+                <img src="{{ product.imageURL }}" class="img-fluid" alt="{{ product.name }}">
+            </div>
+            <div class="col-md-8">
+                <h1>{{ product.name }}</h1>
+                <h2>{{ product.category}}</h2>
+                <h2>Author: {{ product.author }}</h2>
+                <p>Price: ${{ product.price }}</p>
+                <p>Description:{{ product.description }}</p>
+                <!-- <button data-product="{{product.id}}" data-action="add" class="btn btn-outline-secondary add-btn update-cart">Add to Cart</button> -->
+                <!-- Add other product details here -->
+            </div>
+        </div>
+    </div>
+{% endblock content %}
