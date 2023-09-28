@@ -88,7 +88,7 @@ def store(request):
     products = paginator.get_page(page)
 
     search_form = BookSearchForm()
-
+    error_message=None
     # Check if a search query is provided in the request
     if request.method == 'GET':
         search_query = request.GET.get('search')
@@ -101,10 +101,13 @@ def store(request):
             paginator = Paginator(products, 6)
             page = request.GET.get('page')
             products = paginator.get_page(page)
+
+            if not products:
+                error_message = "Sorry ,Try something else!"
             
 
                 
-    context = {'products': products, 'cartItems': cartItems,'categories': categories,'search_query':search_query}
+    context = {'products': products, 'cartItems': cartItems,'categories': categories,'search_query':search_query,'error_message': error_message}
     return render(request, 'store/store.html', context)
 
 def cart(request):
@@ -190,36 +193,12 @@ def processOrder(request):
 
 
 
-# from django.shortcuts import render, get_object_or_404
-# from .models import Product
-
 def product_detail(request, product_id):
     product = get_object_or_404(Product, pk=product_id)
     return render(request, 'store/product_detail.html', {'product': product})
 
 
 
-# def search(request):
-#     query=request.GET['query']
-#     allbooks= Product.objects.filter(title__icontains=query)
-#     params={'allbooks': allbooks}
-#     return render(request, 'store/search.html', params)
 
 
 
-
-
-# @login_required
-# def profile(request):
-#     if request.method == 'POST':
-#         user_form = UserUpdateForm(request.POST, instance=request.user)
-#         profile_form = UserProfileForm(request.POST, request.FILES, instance=request.user.userprofile)
-#         if user_form.is_valid() and profile_form.is_valid():
-#             user_form.save()
-#             profile_form.save()
-#             messages.success(request, 'Your profile has been updated!')
-#             return redirect('profile')
-#     else:
-#         user_form = UserUpdateForm(instance=request.user)
-#         profile_form = UserProfileForm(instance=request.user.userprofile)
-#     return render(request, 'store/profile.html', {'user_form': user_form, 'profile_form': profile_form})

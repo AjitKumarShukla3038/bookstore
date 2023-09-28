@@ -51,19 +51,6 @@ def logout(request):  # Renamed the view function
 
 
 
-# def changepassword(request):
-#     if request.method == "GET":
-#         ss = PasswordChangeForm(user=request.user)
-#         context={'abc':ss}
-#         return render(request,'changepass.html',context)
-
-#     elif request.method  == "POST":
-#         aa = PasswordChangeForm(user=request.user,data=request.POST)
-#         if aa.is_valid():
-#             userr=aa.save()
-#             update_session_auth_hash(request,userr)
-#         return redirect('home')
-
 
 def changepassword(request):
     if request.method == "GET":

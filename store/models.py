@@ -79,15 +79,3 @@ class ShippingAddress(models.Model):
         return self.address
 
 
-
-# class UserProfile(models.Model):
-#     user = models.OneToOneField(User, on_delete=models.CASCADE)
-#     # Add any additional fields you want in the user profile
-#     phone = models.IntegerField(blank=False,max_length=10)
-#     address=models.TextField(blank=False)
-#     profile_picture = models.ImageField(upload_to='static/images', blank=True)
-#     # Add more fields as needed
-
-#     def __str__(self):
-
-#         return self.user.username
