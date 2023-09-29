@@ -99,7 +99,6 @@ def store(request):
 
             if not products:
                 error_message = "Sorry ,Try something else!"
-            
 
                 
     context = {'products': products, 'cartItems': cartItems,'categories': categories,'search_query':search_query,'error_message': error_message}
@@ -110,7 +109,6 @@ def cart(request):
     cartItems=data['cartItems']
     order=data['order']
     items=data['items']
-
 
     context = {'items': items, 'order': order,'cartItems':cartItems}
     return render(request, 'store/cart.html', context)
