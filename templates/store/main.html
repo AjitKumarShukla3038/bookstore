@@ -79,28 +79,36 @@
 		{% if user.is_authenticated %}
 
 
-		<strong>
-			<i class="fas fa-user"></i>
-			Welcome {{ user.username }}
-		</strong>
-	
+		<li class="nav-item dropdown">
+			<a class="nav-link dropdown-toggle" href="#" id="navDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			My Account
+			</a>
+			<div class="dropdown-menu" aria-labelledby="navDropdown">
+			
+			<a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+			<a class="dropdown-item" href="{% url 'reset_password' %}">reset_password</a>
+			</div>
 		
-				  <li class="form-inline my-2 my-lg-0">
-                    <a class="btn btn-warning" href="{% url 'logout' %}">Logout</a>
-                  </li>
+			</li>
+		   
 				  <a href="{% url 'cart' %}">
 					<img  id="cart-icon" src="{% static 'images/cart.png' %}">
 				</a>
 				<p id="cart-total">{{cartItems}}</p>
 		{% else %}
-		                 
-		<li class="form-inline my-2 my-lg-0">
-			<a class="btn btn-warning" href="{% url 'register' %}">Register</a>
-		  </li>
+		
 
-		  <li class="form-inline my-2 my-lg-0">
-			<a class="btn btn-success" href="{% url 'login' %}">Login</a>
-		  </li>
+		<li class="nav-item dropdown">
+			<a class="nav-link dropdown-toggle" href="#" id="navDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			My Account
+			</a>
+			<div class="dropdown-menu" aria-labelledby="navDropdown">
+			
+			<a class="dropdown-item" href="{% url 'login' %}">Login</button><br/></a>
+			<a class="dropdown-item" href="{% url 'register' %}">Register Here!</a>
+			
+			</div>
+			</li>
 	
 
 			{% endif %}

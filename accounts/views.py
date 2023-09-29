@@ -32,7 +32,12 @@ def login(request):
             username = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password')
             user = authenticate(username=username, password=password)
+            remember_me = form.cleaned_data.get('remember_me')
             if user is not None:
+                if remember_me:
+                    request.session.set_expiry(1209600)  # 2 weeks (in seconds)
+                else:
+                    request.session.set_expiry(0)
                 auth_login(request, user)
                 messages.info(request, f"You are now logged in as {username}.")
                 return redirect("/")
@@ -47,9 +52,6 @@ def logout(request):  # Renamed the view function
     auth_logout(request)  # Changed the function name
     messages.info(request, "You have successfully logged out.")
     return redirect("/")
-
-
-
 
 
 def changepassword(request):
