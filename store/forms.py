@@ -16,7 +16,7 @@ class BookSearchForm(forms.Form):
 #         fields = ['quantity']
 
 
-class ShippingAddress(forms.ModelForm):
+class ShippingAddressForm(forms.ModelForm):
 	class Meta:
 		model = ShippingAddress
 		fields = ['address', 'city', 'state', 'zipcode']

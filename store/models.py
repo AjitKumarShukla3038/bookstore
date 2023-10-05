@@ -73,6 +73,8 @@ class ShippingAddress(models.Model):
     state = models.CharField(max_length=200)
     zipcode = models.CharField(max_length=200)
     date_added = models.DateTimeField(auto_now_add=True)
+    is_default = models.BooleanField(default=True)  # New field indicating the default address
+
 
     def __str__(self):
         return self.address

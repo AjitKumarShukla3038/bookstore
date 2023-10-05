@@ -5,10 +5,11 @@ import json
 import datetime
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
-from .forms import BookSearchForm,ShippingAddress
+from .forms import BookSearchForm,ShippingAddressForm
 from .utils import cookieCart,cartData
 from django.contrib import messages
 from django.shortcuts import redirect
+
 
 
 def category(request, cat):
@@ -123,12 +124,31 @@ def store(request):
 
 def checkout(request):
     cart_items = Cart.objects.filter(user=request.user)
+    user_default_address = ShippingAddress.objects.filter(user=request.user, is_default=True).first()
+
     cart_total = 0  
 
     for item in cart_items:
         item.total_price = item.product.price * item.quantity  
         cart_total += item.total_price  
-    return render(request, 'store/checkout.html', {'cart_items': cart_items, 'cart_total': cart_total})
+
+
+    if request.method=='POST':
+        form=ShippingAddressForm(request.POST)
+        if form.is_valid():
+            shipping_address = form.save(commit=False)
+            shipping_address.user = request.user
+            shipping_address.save()
+            messages.success(request, 'Address saved successfully.')
+            return redirect('checkout')
+        else:
+            pass
+    else:
+            
+        form_data = {'use_default_address': True} if user_default_address else {}
+        form = ShippingAddressForm(initial=form_data)
+    
+    return render(request, 'store/checkout.html', {'cart_items': cart_items, 'cart_total': cart_total,'form': form,'user_default_address': user_default_address})
     
 
 

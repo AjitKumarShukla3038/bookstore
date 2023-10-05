@@ -1,33 +1,18 @@
 {% extends 'store/main.html' %}
 {% load static %}
 {% block content %}
+
      <div class="row">
 		<div class="col-lg-6">
 			<div class="box-element" id="form-wrapper">
-		
-				<form id="form">
+	
+				<form method="POST">
+					{% csrf_token %}
 					<div id="user-info">
-						<div class="form-field">
-							<input required class="form-control" type="text" name="name" placeholder="Name..">
-						</div>
-						<div class="form-field">
-							<input required class="form-control" type="email" name="email" placeholder="Email..">
-						</div>
-						<div class="form-field">
-							<input class="form-control" type="text" name="address" placeholder="Address..">
-						</div>
-						<div class="form-field">
-							<input class="form-control" type="text" name="city" placeholder="City..">
-						</div>
-						<div class="form-field">
-							<input class="form-control" type="text" name="state" placeholder="State..">
-						</div>
-					</div>
-					
-					<div id="shipping-info">
 						<hr>
-						<p>Shipping Details:</p>
+						<h4>Shipping Details:</h4>
 						<hr>
+		
 						<div class="form-field">
 							<input class="form-control" type="text" name="address" placeholder="Address..">
 						</div>
@@ -40,27 +25,25 @@
 						<div class="form-field">
 							<input class="form-control" type="text" name="zipcode" placeholder="Zip code..">
 						</div>
-						<div class="form-field">
-							<input class="form-control" type="text" name="country" placeholder="Country..">
-						</div>
 					</div>
-
+				
 					<hr>
-					<input id="form-button" class="btn btn-success btn-block" type="submit" value="Continue">
-				</form>
-			</div>
+					<input id="form-button" class="btn btn-success btn-block" type="submit" value="Submit">
+					
+					<br>
 
-			<br>
-			<form method="post">
-				{% csrf_token %}
-				<div class="box-element hidden" id="payment-info">
-					<small>Payment Options</small>
-					<button id="make-payment">Make payment</button>
-					<div id="paypal-button-container"></div>
-				</div>
-			</form>
-			
-			
+					{% if user_default_address %}
+					<h4>Default Address</h4>
+					<p>{{ user_default_address.address }}</p>
+					<p>{{ user_default_address.city }}, {{ user_default_address.state }}, {{ user_default_address.zipcode }}</p>
+					<input type="checkbox" name="use_default_address"> Use Default Address
+				{% endif %}
+				<br>
+				<br>
+				<button type="submit">Proceed To Pay</button>
+				</form>
+ 
+			</div>		
 		</div>
 
 		<div class="col-lg-6">
@@ -86,7 +69,7 @@
 
 	
 
-	<script type="text/javascript">
+	<!-- <script type="text/javascript">
 		var shipping = '{{order.shipping}}'
 
 		if (shipping == 'False'){
@@ -115,7 +98,7 @@
 
 
 	
-	</script>
+	</script> -->
 {% endblock content %}
 
 
