@@ -1,6 +1,7 @@
 import json
 from .models import *
-
+from django.contrib import messages
+from django.shortcuts import redirect
 def cookieCart(request):
 
 	#Create empty cart for now for non-logged in user
@@ -47,14 +48,16 @@ def cartData(request):
 		order, created = Order.objects.get_or_create(user=user, complete=False)
 		items = order.orderitem_set.all()
 		cartItems = order.get_cart_items
+
+		
+		cartItems = order.get_cart_items
 	else:
 		cookieData = cookieCart(request)
 		cartItems = cookieData['cartItems']
 		order = cookieData['order']
-		items = cookieData['items']
+		items = cookieData['items']	
 
 	return {'cartItems':cartItems ,'order':order, 'items':items}
-
 
 	
 def guestOrder(request, data):

@@ -35,18 +35,20 @@
 			<img class="thumbnail" src="{{product.imageURL}}">
 			<div class="box-element product">
 				<h5>{{product.name}}</h5>
+				<p>Quantity:{% if product.quantity > 0 %} {{ product.quantity }} {% else %}<span class="text-success"> Out of stock</span>{% endif %}</p>
 				<h6>{{product.category}}</h6>
-
 				<h6>Author:{{product.author}}</h6>
 				<h6>$ {{product.price}}</h6>
+				 
 
 				<hr>
+				
                 
-				<button data-product="{{product.id}}" data-action="add" class="btn btn-outline-secondary add-btn update-cart">Add to Cart</button>
+				<a href="{% url 'addtocart' product.id %}" class="btn btn-outline-secondary add-btn update-cart">Add to Cart</a>
 				
 				<a class="btn btn-outline-success" href="{% url 'product_detail' product.id %}">View</a>
 				<!-- <h6 style="display: inline-block; float: right">${{product.price}}</h6> -->
-
+				
 			</div>
 		</div>
 		{% endfor %}
@@ -69,7 +71,7 @@
 					<li class="page-item disabled">
 						<span class="page-link">Page {{ products.number }} of {{ products.paginator.num_pages }}</span>
 					</li>
-					{% if books.has_next %}
+					{% if products.has_next %}
 						<li class="page-item">
 							<a class="page-link" href="?page={{ products.next_page_number }}">Next &#8669;</a>
 						</li>

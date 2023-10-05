@@ -4,6 +4,8 @@
 <head>
 	<title>BookStore</title>
 
+
+
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1" />
 
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
@@ -57,80 +59,77 @@
 			document.cookie ='cart=' + JSON.stringify(cart) + ";domain=;path=/"
 		}
 		console.log('Cart:', cart)
+
+
 	
 	</script>
 
+	
 </head>
 <body>
 
-	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-	  <a class="navbar-brand" href="{% url 'store' %}">BookStore</a>
-	  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-	    <span class="navbar-toggler-icon"></span>
-	  </button>
+	<div class="d-flex flex-column min-vh-100">
 
-	  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-	    <ul class="navbar-nav mr-auto">
-	      <li class="nav-item active">
-	        <a class="nav-link" href="{% url 'home' %}">Explore Books<span class="sr-only">(current)</span></a>
-	      </li>
-	 
-	    </ul>
-		{% if user.is_authenticated %}
+	<nav class="navbar sticky-top navbar-expand-lg navbar-light bg-light shadow px-5">
+		<a class="navbar-brand" href="{% url 'store' %}"><b>BookStore</b></a>
+		<a class="navbar-brand" href="{% url 'home' %}"><b>Explore Books</b></a>
 
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
 
-		<li class="nav-item dropdown">
-			<a class="nav-link dropdown-toggle" href="#" id="navDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-			My Account
-			</a>
-			<div class="dropdown-menu" aria-labelledby="navDropdown">
-			
-			<a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
-			<a class="dropdown-item" href="{% url 'reset_password' %}">reset_password</a>
-			</div>
-		
-			</li>
-		   
-				  <a href="{% url 'cart' %}">
-					<img  id="cart-icon" src="{% static 'images/cart.png' %}">
-				</a>
-				<p id="cart-total">{{cartItems}}</p>
-		{% else %}
-		
-
-		<li class="nav-item dropdown">
-			<a class="nav-link dropdown-toggle" href="#" id="navDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-			My Account
-			</a>
-			<div class="dropdown-menu" aria-labelledby="navDropdown">
-			
-			<a class="dropdown-item" href="{% url 'login' %}">Login</button><br/></a>
-			<a class="dropdown-item" href="{% url 'register' %}">Register Here!</a>
-			
-			</div>
-			</li>
 	
-
-			{% endif %}
-
-	    </div>
-	  </div>
+		<div class="collapse navbar-collapse" id="navbarSupportedContent">
+			<ul class="navbar-nav ml-auto">
+				{% if user.is_authenticated %}
+				<li class="nav-item">
+					<a class="nav-link">
+						<strong>
+							<i class="fas fa-user"></i>
+							{{ user.username }}
+						</strong>
+					</a>
+				</li>
+				<li class="nav-item">
+				<a class="nav-link" href="{% url 'logout' %}">
+					<i class="fas fa-sign-out-alt"></i> Logout</a>
+				</li>
+				<a href="{% url 'cart' %}">
+					<img  id="cart-icon" src="{% static 'images/cart.png' %}">
+				</a><p id="cart-total"></p>
+				{% else %}
+				<li class="nav-item">
+				<a class="nav-link" href="{% url 'login' %}">
+					<i class="fas fa-sign-in-alt"></i> Login</a>
+				</li>
+				<li class="nav-item">
+				<a class="nav-link" href="{% url 'register' %}">
+					<i class="fas fa-user-plus"></i> register</a>
+				{% endif %}
+			</ul>
+		</div>
 	</nav>
-
-     <div class="container">
-            <br>
-			
-            {% block content %}
-
-
-            {% endblock content %}
-         </div>
+<center>
+	{% if messages %}
+    <div class="messages d-flex text-danger w-25">
+        {% for message in messages %}
+     <div  class=" alert alert-{{ message.tags }}">
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}</center>
+    <div class="container flex-grow-1">
+        {% block content %} {% endblock %}
+    </div>
 
 		 <center><footer class="footer">
 			<div>
 				<p>&copy; 2023 Ajit. All rights reserved.</p>
 			</div>
 		</footer></center>
+
+</div>
 				
 	<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
 

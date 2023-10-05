@@ -7,23 +7,15 @@ from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash
 from django.core.mail import send_mail
 from django.conf import settings
-from django.contrib.auth import login as auth_login  
+from django.contrib.auth import login as auth_login 
+from django.views import generic
+from django.urls import reverse_lazy
 # from store.models import Customer
 
-def register(request):
-    if request.method == "POST":
-        form = NewUserForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-
-            # customer, created = Customer.objects.get_or_create(user=user)
-
-            auth_login(request, user)
-            messages.success(request, "Registration successful.")
-            return redirect("/")
-        messages.error(request, "Unsuccessful registration. Invalid information.")
-    form = NewUserForm()
-    return render(request=request, template_name="register.html", context={"register_form": form})
+class UserRegistraion(generic.CreateView):
+    form_class = NewUserForm
+    template_name = 'register.html'
+    success_url = reverse_lazy('login')
 
 def login(request):
     if request.method == "POST":

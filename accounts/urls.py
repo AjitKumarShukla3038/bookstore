@@ -6,7 +6,7 @@ from atexit import register
 
 
 urlpatterns = [
-    path('register/',views.register, name='register'),
+    path('register/',views.UserRegistraion.as_view(), name='register'),
     path('login/',views.login, name='login'),
     path("logout/", views.logout, name= "logout"),
     path('changepassword',views.changepassword,name="changepassword"),

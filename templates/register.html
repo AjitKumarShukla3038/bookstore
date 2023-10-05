@@ -6,10 +6,10 @@
 
 <!-- Register -->
 <div class="container py-5">
-    <h1>Register</h1>
+    <h1>Register Here!</h1>
     <form method="POST">
         {% csrf_token %}
-        {{ register_form|crispy }}
+        {{ form|crispy }}
         <button class="btn btn-primary" type="submit">Register</button>
     </form>
     <p class="text-center">If you already have an account, <a href="{% url 'login' %}">login</a>.</p>
