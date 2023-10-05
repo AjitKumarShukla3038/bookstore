@@ -152,6 +152,17 @@ def checkout(request):
     
 
 
+def process_payment(request):
+        cart_items = Cart.objects.filter(user=request.user)
+
+        orders = Order.objects.filter(user=request.user)
+        messages.success(request, 'payment saved successfully.')
+        
+        cart_items.delete()
+
+
+
+        return render(request, 'order_history.html', {'orders': orders})
 
 def updateItem(request):
     data = json.loads(request.body)
@@ -291,5 +302,6 @@ def remove_from_cart(request, cart_item_id):
         product.quantity += cart_quantity
         product.save()
     return redirect('cart')
+
 
 

@@ -31,15 +31,29 @@ class Product(models.Model):
             url = ''
         return url
 
+class ShippingAddress(models.Model):
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    # order = models.ForeignKey(Order, on_delete=models.SET_NULL, null=True)
+    address = models.CharField(max_length=200)
+    city = models.CharField(max_length=200)
+    state = models.CharField(max_length=200)
+    zipcode = models.CharField(max_length=200)
+    date_added = models.DateTimeField(auto_now_add=True)
+    is_default = models.BooleanField(default=True)  # New field indicating the default address
 
+
+    def __str__(self):
+        return self.address
 
 
 
 class Order(models.Model):
+    shipping_address = models.ForeignKey(ShippingAddress, on_delete=models.CASCADE,default=1)
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
     date_ordered = models.DateTimeField(auto_now_add=True)
     complete = models.BooleanField(default=False)
     transaction_id = models.CharField(max_length=100, null=True)
+    
 
     def __str__(self):
         return str(self.id)
@@ -65,19 +79,7 @@ class OrderItem(models.Model):
     def get_total(self):
         return self.product.price * self.quantity
 
-class ShippingAddress(models.Model):
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
-    order = models.ForeignKey(Order, on_delete=models.SET_NULL, null=True)
-    address = models.CharField(max_length=200)
-    city = models.CharField(max_length=200)
-    state = models.CharField(max_length=200)
-    zipcode = models.CharField(max_length=200)
-    date_added = models.DateTimeField(auto_now_add=True)
-    is_default = models.BooleanField(default=True)  # New field indicating the default address
 
-
-    def __str__(self):
-        return self.address
 
 
 class Cart(models.Model):

@@ -1,0 +1,21 @@
+{% extends 'store/main.html' %}
+{% load static %}
+
+{% block content %}
+    <h2>Payment Successful!</h2>
+
+    <!-- Display order history information -->
+    {% for order in orders %}
+        <div>
+            <h6>OrderId {{ order.id }}</h6>
+            <h6>UserName {{order.user}}</h6>
+            <h6>Date {{order.date_ordered}}</h6>
+            <p>Shipping Address: {{ order.shipping_address.address }}, {{ order.shipping_address.city }}, {{ order.shipping_address.state }}, {{ order.shipping_address.zipcode }}</p>
+            <!-- <p>Total Price: ${{ cart_total }}</p> -->
+            <!-- Add more order details as needed -->
+        </div>
+        <hr>
+    {% empty %}
+        <p>No orders found.</p>
+    {% endfor %}
+{% endblock %}
