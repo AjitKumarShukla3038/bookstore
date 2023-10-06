@@ -36,11 +36,11 @@
 					<h4>Default Address</h4>
 					<p>{{ user_default_address.address }}</p>
 					<p>{{ user_default_address.city }}, {{ user_default_address.state }}, {{ user_default_address.zipcode }}</p>
-					<input type="checkbox" name="use_default_address"> Use Default Address
-				{% endif %}
+					<input type="checkbox" name="use_default_address" id="useDefaultAddress"> Use Default Address
+					{% endif %}
 				<br>
 				<br>
-				<a href="{% url 'process_payment' %}" class="btn btn-success">Proceed to Pay</a>
+				<a href="{% url 'process_payment' %}" class="btn btn-success" id="proceedToPayBtn" disabled>Proceed to Pay</a>
 			</form>
  
 			</div>		
@@ -69,36 +69,28 @@
 
 	
 
-	<!-- <script type="text/javascript">
-		var shipping = '{{order.shipping}}'
-
-		if (shipping == 'False'){
-		 	document.getElementById('shipping-info').innerHTML = ''
-		}
-
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script>
+	$(document).ready(function() {
+		// Disable the button initially
+		$('#proceedToPayBtn').prop('disabled', true);
 	
-
-		var form = document.getElementById('form')
-		form.addEventListener('submit', function(e){
-	    	e.preventDefault()
-	    	console.log('Form Submitted...')
-	    	document.getElementById('form-button').classList.add("hidden");
-	    	document.getElementById('payment-info').classList.remove("hidden");
-	    })
-
+		// Enable/disable button based on form validity
+		$('form').on('input', function() {
+			var isFormValid = this.checkValidity(); // Check if the form is valid
 	
-	    document.getElementById('make-payment').addEventListener('click', function(e){
-	    	submitFormData()
-	    })
-	    
-		function submitFormData(){
-			console.log('payment button clicked')
-		}
+			if (isFormValid) {
+				$('#proceedToPayBtn').prop('disabled', false);
+			} else {
+				$('#proceedToPayBtn').prop('disabled', true);
+			}
+		});
+	});
+	</script>
 
 
 
 	
-	</script> -->
 {% endblock content %}
 
 

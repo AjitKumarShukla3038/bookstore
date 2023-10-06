@@ -12,7 +12,9 @@
                 <h2>Author: {{ product.author }}</h2>
                 <p>Price: ${{ product.price }}</p>
                 <p>Description:{{ product.description }}</p>
-                <!-- <button data-product="{{product.id}}" data-action="add" class="btn btn-outline-secondary add-btn update-cart">Add to Cart</button> -->
+                <a  class="btn btn-outline-dark" href="{% url 'home' %}">&#x2190; Back to Home</a>
+
+				<a href="{% url 'addtocart' product.id %}" class="btn btn-outline-secondary add-btn update-cart">Add to Cart</a>
                 <!-- Add other product details here -->
             </div>
         </div>

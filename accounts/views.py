@@ -19,6 +19,7 @@ class UserRegistraion(generic.CreateView):
 
 def login(request):
     if request.method == "POST":
+
         form = AuthenticationForm(request, data=request.POST)
         if form.is_valid():
             username = form.cleaned_data.get('username')
@@ -31,12 +32,18 @@ def login(request):
                 else:
                     request.session.set_expiry(0)
                 auth_login(request, user)
-                messages.info(request, f"You are now logged in as {username}.")
+
+                # Store user information in session
+                # request.session['user_id'] = user.id
+                # request.session['username'] = user.username
+
+
+                # messages.info(request, f"You are now logged in as {username}.")
                 return redirect("/")
             else:
-                messages.error(request, "Invalid username or password.")
+                pass
         else:
-            messages.error(request, "Invalid username or password.")
+            pass
     form = AuthenticationForm()
     return render(request=request, template_name="login.html", context={"login_form": form})
 

@@ -9,7 +9,7 @@ from .forms import BookSearchForm,ShippingAddressForm
 from .utils import cookieCart,cartData
 from django.contrib import messages
 from django.shortcuts import redirect
-
+from django.contrib.auth.decorators import login_required
 
 
 def category(request, cat):
@@ -121,8 +121,10 @@ def store(request):
 
 
 
-
+@login_required
 def checkout(request):
+
+
     cart_items = Cart.objects.filter(user=request.user)
     user_default_address = ShippingAddress.objects.filter(user=request.user, is_default=True).first()
 
@@ -145,78 +147,85 @@ def checkout(request):
             pass
     else:
             
-        form_data = {'use_default_address': True} if user_default_address else {}
+        form_data = {'user_default_address': True} if user_default_address else {}
         form = ShippingAddressForm(initial=form_data)
+
+    
     
     return render(request, 'store/checkout.html', {'cart_items': cart_items, 'cart_total': cart_total,'form': form,'user_default_address': user_default_address})
     
 
-
+@login_required
 def process_payment(request):
-        cart_items = Cart.objects.filter(user=request.user)
+    cart_items = Cart.objects.filter(user=request.user)
 
-        orders = Order.objects.filter(user=request.user)
-        messages.success(request, 'payment saved successfully.')
+    if not cart_items.exists():
+        messages.error(request, 'Your cart is empty. Please add items to proceed with the payment.')
+        return redirect('cart')  # Redirect to the cart page or any other appropriate page
         
-        cart_items.delete()
+    orders = Order.objects.filter(user=request.user)
+    messages.success(request, 'payment saved successfully.')
+        
+    cart_items.delete()
 
 
 
-        return render(request, 'order_history.html', {'orders': orders})
+    return render(request, 'order_history.html', {'orders': orders})
 
-def updateItem(request):
-    data = json.loads(request.body)
-    productId = data['productId']
-    action = data['action']
-    print('Action:', action)
-    print('Product:', productId)
 
-    user = request.user
-    product = Product.objects.get(id=productId)
-    order, created = Order.objects.get_or_create(user=user, complete=False)
+# def updateItem(request):
+#     data = json.loads(request.body)
+#     productId = data['productId']
+#     action = data['action']
+#     print('Action:', action)
+#     print('Product:', productId)
 
-    orderItem, created = OrderItem.objects.get_or_create(order=order, product=product)
+#     user = request.user
+#     product = Product.objects.get(id=productId)
+#     order, created = Order.objects.get_or_create(user=user, complete=False)
 
-    if action == 'add':
-        orderItem.quantity = (orderItem.quantity + 1)
-    elif action == 'remove':
-        orderItem.quantity = (orderItem.quantity - 1)
+#     orderItem, created = OrderItem.objects.get_or_create(order=order, product=product)
 
-    orderItem.save()
+#     if action == 'add':
+#         orderItem.quantity = (orderItem.quantity + 1)
+#     elif action == 'remove':
+#         orderItem.quantity = (orderItem.quantity - 1)
 
-    if orderItem.quantity <= 0:
-        orderItem.delete()
+#     orderItem.save()
 
-    return JsonResponse('Item was added', safe=False)
+#     if orderItem.quantity <= 0:
+#         orderItem.delete()
 
-def processOrder(request):
-    transaction_id = datetime.datetime.now().timestamp()
-    data = json.loads(request.body)
+#     return JsonResponse('Item was added', safe=False)
 
-    if request.user.is_authenticated:
-        user = request.user
-        order, created = Order.objects.get_or_create(user=user, complete=False)
-    else:
-        # Handle the case when the user is not authenticated or implement guest order creation.
-        pass
-    total = float(data['form']['total'])
-    order.transaction_id = transaction_id
+# def processOrder(request):
+#     transaction_id = datetime.datetime.now().timestamp()
+#     data = json.loads(request.body)
 
-    if total == float(order.get_cart_total):
-        order.complete = True
-    order.save()
+#     if request.user.is_authenticated:
+#         user = request.user
+#         order, created = Order.objects.get_or_create(user=user, complete=False)
+#     else:
+#         # Handle the case when the user is not authenticated or implement guest order creation.
+#         pass
+#     total = float(data['form']['total'])
+#     order.transaction_id = transaction_id
 
-    if order.shipping == True:
-        ShippingAddress.objects.create(
-            user=user,
-            order=order,
-            address=data['shipping']['address'],
-            city=data['shipping']['city'],
-            state=data['shipping']['state'],
-            zipcode=data['shipping']['zipcode'],
-        )
+#     if total == float(order.get_cart_total):
+#         order.complete = True
+#     order.save()
 
-    return JsonResponse('Payment done..', safe=False)
+#     if order.shipping == True:
+#         ShippingAddress.objects.create(
+#             user=user,
+#             order=order,
+#             address=data['shipping']['address'],
+#             city=data['shipping']['city'],
+#             state=data['shipping']['state'],
+#             zipcode=data['shipping']['zipcode'],
+#         )
+
+#     return JsonResponse('Payment done..', safe=False)
 
 
 
@@ -227,7 +236,7 @@ def product_detail(request, product_id):
 
 
 
-
+@login_required
 def addtocart(request, product_id):
 
     product = get_object_or_404(Product, id=product_id)
@@ -237,7 +246,7 @@ def addtocart(request, product_id):
             raise ValueError()
     except (TypeError, ValueError):
         messages.error(request, 'Please enter a valid quantity.')
-        return redirect('viewcart')
+        return redirect('cart')
     
     if quantity > product.quantity:
         return render(request, 'store/emptycart.html', {'message': 'Cannot add more items than available!'})
@@ -260,7 +269,6 @@ def addtocart(request, product_id):
 
 
 def cart(request):
-
 
     cart_items = Cart.objects.filter(user=request.user)
     cart_total = 0  
