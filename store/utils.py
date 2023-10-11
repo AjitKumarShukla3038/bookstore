@@ -50,7 +50,6 @@ def cartData(request):
 		cartItems = order.get_cart_items
 
 		
-		cartItems = order.get_cart_items
 	else:
 		cookieData = cookieCart(request)
 		cartItems = cookieData['cartItems']

@@ -9,11 +9,11 @@ from .forms import BookSearchForm,ShippingAddressForm
 from .utils import cookieCart,cartData
 from django.contrib import messages
 from django.shortcuts import redirect
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required 
 
 
-def category(request, cat):
-    category = Category.objects.get(id=cat)
+def category(request, slug):
+    category = Category.objects.get(slug=slug)
     products = Product.objects.filter(category=category)
 
     context = {
@@ -51,22 +51,22 @@ def home(request):
     return render(request, 'store/home.html', context)
 
 
-def product_detail(request, product_id):
+# def product_detail(request, slug):
 
-    if request.user.is_authenticated:
-        user = request.user
-        order, created = Order.objects.get_or_create(user=user, complete=False)
-        items = order.orderitem_set.all()
-        cartItems = order.get_cart_items
+#     if request.user.is_authenticated:
+#         user = request.user
+#         order, created = Order.objects.get_or_create(user=user, complete=False)
+#         items = order.orderitem_set.all()
+#         cartItems = order.get_cart_items
 
-    else:
-        items = []
-        order = {'get_cart_total': 0, 'get_cart_items': 0, 'shipping': False}
-        cartItems = order['get_cart_items']
+#     else:
+#         items = []
+#         order = {'get_cart_total': 0, 'get_cart_items': 0, 'shipping': False}
+#         cartItems = order['get_cart_items']
 
-    products = Product.objects.all()
-    context = {'products': products, 'cartItems': cartItems}
-    return render(request, 'store/product_detail.html', context)
+#     products = Product.objects.all(slug=slug)
+#     context = {'products': products, 'cartItems': cartItems}
+#     return render(request, 'store/product_detail.html', context)
 
     
 def store(request):
@@ -106,15 +106,6 @@ def store(request):
     context = {'products': products, 'cartItems': cartItems,'categories': categories,'search_query':search_query,'error_message': error_message}
     return render(request, 'store/store.html', context)
 
-# def cart(request):
-#     user = request.user
-#     cartItems = Cart.objects.filter(user=user)
-  
-
-#     for item in cartItems:
-#         total_amount=item.product.price* item.quantity
-    
-#     return render(request,'store/cart.html',{'items':cartItems,'order':order, 'items':items})
 
 
 
@@ -173,65 +164,10 @@ def process_payment(request):
     return render(request, 'order_history.html', {'orders': orders})
 
 
-# def updateItem(request):
-#     data = json.loads(request.body)
-#     productId = data['productId']
-#     action = data['action']
-#     print('Action:', action)
-#     print('Product:', productId)
-
-#     user = request.user
-#     product = Product.objects.get(id=productId)
-#     order, created = Order.objects.get_or_create(user=user, complete=False)
-
-#     orderItem, created = OrderItem.objects.get_or_create(order=order, product=product)
-
-#     if action == 'add':
-#         orderItem.quantity = (orderItem.quantity + 1)
-#     elif action == 'remove':
-#         orderItem.quantity = (orderItem.quantity - 1)
-
-#     orderItem.save()
-
-#     if orderItem.quantity <= 0:
-#         orderItem.delete()
-
-#     return JsonResponse('Item was added', safe=False)
-
-# def processOrder(request):
-#     transaction_id = datetime.datetime.now().timestamp()
-#     data = json.loads(request.body)
-
-#     if request.user.is_authenticated:
-#         user = request.user
-#         order, created = Order.objects.get_or_create(user=user, complete=False)
-#     else:
-#         # Handle the case when the user is not authenticated or implement guest order creation.
-#         pass
-#     total = float(data['form']['total'])
-#     order.transaction_id = transaction_id
-
-#     if total == float(order.get_cart_total):
-#         order.complete = True
-#     order.save()
-
-#     if order.shipping == True:
-#         ShippingAddress.objects.create(
-#             user=user,
-#             order=order,
-#             address=data['shipping']['address'],
-#             city=data['shipping']['city'],
-#             state=data['shipping']['state'],
-#             zipcode=data['shipping']['zipcode'],
-#         )
-
-#     return JsonResponse('Payment done..', safe=False)
 
 
-
-
-def product_detail(request, product_id):
-    product = get_object_or_404(Product, pk=product_id)
+def product_detail(request, slug):
+    product = get_object_or_404(Product, slug=slug)
     return render(request, 'store/product_detail.html', {'product': product})
 
 

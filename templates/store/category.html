@@ -13,7 +13,7 @@
                             <h5 class="card-title">{{ product.name }}</h5>
                             <p class="card-text">Author: {{ product.author }}</p>
                             <p class="card-text">Price: ${{ product.price }}</p>
-                            <a href="{% url 'product_detail' product.id %}" class="btn btn-primary">View</a>
+                            <a href="{% url 'product_detail' product.slug %}" class="btn btn-primary">View</a>
                         </div>
                     </div>
                 </div>

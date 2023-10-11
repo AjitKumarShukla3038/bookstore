@@ -84,17 +84,25 @@ WSGI_APPLICATION = 'bookstore.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
-
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.mysql',  # Change to your database engine if needed
-        'NAME': 'bookstore3',  # Database name
-        'USER': 'root',  # Database user
-        'PASSWORD': 'Siddhant@15',  # Database password
-        'HOST': 'localhost',  # Database host
-        'PORT': '3306',  # Database port
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR / 'db.sqlite3',
     }
 }
+
+
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',  # Change to your database engine if needed
+#         'NAME': 'books',  # Database name
+#         'USER': 'root',  # Database user
+#         'PASSWORD': 'Siddhant@15',  # Database password
+#         'HOST': 'localhost',  # Database host
+#         'PORT': '3306',  # Database port
+#     }
+# }
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators

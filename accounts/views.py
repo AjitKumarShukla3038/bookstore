@@ -38,13 +38,14 @@ def login(request):
                 # request.session['username'] = user.username
 
 
-                # messages.info(request, f"You are now logged in as {username}.")
+                messages.info(request, f"You are now logged in as {username}.")
                 return redirect("/")
-            else:
-                pass
+
         else:
-            pass
-    form = AuthenticationForm()
+            messages.error(request, 'Invalid username or password. Please try again.')
+    else:
+        
+        form = AuthenticationForm()
     return render(request=request, template_name="login.html", context={"login_form": form})
 
 def logout(request):  # Renamed the view function

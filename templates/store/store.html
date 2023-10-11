@@ -21,7 +21,7 @@
 			<ul class="list-group">
 				{% for category in categories %}
 					<li class="list-group-item">
-						<a href="{% url 'category' category.id %}">{{ category.name }}</a>
+						<a href="{% url 'category' category.slug %}">{{ category.name }}</a>
 					</li>
 				{% endfor %}
 			</ul>
@@ -46,7 +46,7 @@
                 
 				<a href="{% url 'addtocart' product.id %}" class="btn btn-outline-secondary add-btn update-cart">Add to Cart</a>
 				
-				<a class="btn btn-outline-success" href="{% url 'product_detail' product.id %}">View</a>
+				<a class="btn btn-outline-success" href="{% url 'product_detail' product.slug %}">View</a>
 				<!-- <h6 style="display: inline-block; float: right">${{product.price}}</h6> -->
 				
 			</div>
