@@ -15,10 +15,12 @@ from django.contrib.auth.decorators import login_required
 def category(request, slug):
     category = Category.objects.get(slug=slug)
     products = Product.objects.filter(category=category)
-
+    categories = Category.objects.all()
+    
     context = {
         'category': category,
         'products': products,
+        'categories': categories,
     }
 
     return render(request, 'store/category.html', context)
@@ -108,10 +110,6 @@ def store(request):
 
 
 
-
-
-
-
 @login_required
 def checkout(request):
 
@@ -168,7 +166,9 @@ def process_payment(request):
 
 def product_detail(request, slug):
     product = get_object_or_404(Product, slug=slug)
-    return render(request, 'store/product_detail.html', {'product': product})
+    categories = Category.objects.all()
+
+    return render(request, 'store/product_detail.html', {'product': product,'categories':categories})
 
 
 

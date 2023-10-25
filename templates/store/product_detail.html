@@ -2,8 +2,10 @@
 {% load static %}
 {% block content %}
     <div class="container">
+        <br>
         <div class="row">
             <div class="col-md-4">
+                <br>
                 <img src="{{ product.imageURL }}" class="img-fluid" alt="{{ product.name }}">
             </div>
             <div class="col-md-8">
@@ -12,7 +14,7 @@
                 <h2>Author: {{ product.author }}</h2>
                 <p>Price: ${{ product.price }}</p>
                 <p>Description:{{ product.description }}</p>
-                <a  class="btn btn-outline-dark" href="{% url 'home' %}">&#x2190; Back to Home</a>
+                <a  class="btn btn-outline-dark" href="{% url 'store' %}">&#x2190; Back to Home</a>
 
 				<a href="{% url 'addtocart' product.id %}" class="btn btn-outline-secondary add-btn update-cart">Add to Cart</a>
                 <!-- Add other product details here -->

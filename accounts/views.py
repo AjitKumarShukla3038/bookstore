@@ -42,7 +42,8 @@ def login(request):
                 return redirect("/")
 
         else:
-            messages.error(request, 'Invalid username or password. Please try again.')
+            pass
+            # messages.error(request, 'Invalid username or password. Please try again.')
     else:
         
         form = AuthenticationForm()

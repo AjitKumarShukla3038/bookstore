@@ -1,31 +1,93 @@
 {% extends "store/main.html" %}
 
 {% block content %}      
-
 {% load crispy_forms_tags %}
 
+<style>
+  .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh; 
+  }
+
+  .login-form-container {
+    background-color: #ffffff;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0px 0px 20px 0px rgba(0,0,0,0.1);
+    text-align: center;
+    max-width: 400px;
+    width: 100%;
+  }
+
+  .login-form-container h1 {
+    font-size: 2rem;
+    margin-bottom: 30px;
+    color: #333;
+  }
+
+  .login-form input[type="text"],
+  .login-form input[type="password"] {
+    width: 100%;
+    padding: 12px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+  }
+
+  .form-check-label {
+    font-size: 0.9rem;
+    color: #555;
+  }
+
+  .btn-primary {
+    background-color: #007bff;
+    border: none;
+    padding: 12px 24px;
+    font-size: 1rem;
+    cursor: pointer;
+  }
+
+  .btn-primary:hover {
+    background-color: #0056b3;
+  }
+
+  .forgot-password {
+    color: #007bff;
+    text-decoration: none;
+    margin-top: 10px;
+    display: block;
+    font-size: 0.9rem;
+  }
+
+  .forgot-password:hover {
+    text-decoration: underline;
+  }
+
+  .create-account {
+    margin-top: 20px;
+    font-size: 1rem;
+  }
+</style>
+
 <!-- Login --> 
-<div class="container py-5">
-  <h1>Login</h1>
-  <form method="POST">
-    {% csrf_token %}
-    {{ login_form|crispy }}
-    <div class="form-check">
-      <input class="form-check-input" type="checkbox" id="rememberMe" name="remember_me">
-      <label class="form-check-label" for="rememberMe">Remember Me</label>
+<div class="container">
+  <div class="login-form-container">
+    <h1>Login</h1>
+    <form method="POST" class="login-form">
+      {% csrf_token %}
+      {{ login_form|crispy }}
+      <div class="form-check">
+        <input class="form-check-input" type="checkbox" id="rememberMe" name="remember_me">
+        <label class="form-check-label" for="rememberMe">Remember Me</label>
+      </div>
+      <br>
+      <button class="btn btn-primary" type="submit">Login</button>
+      <a href="{% url 'reset_password' %}" class="forgot-password">Forgot Password?</a>
+    </form>
+    <p class="create-account">Don't have an account? <a href="{% url 'register' %}">Create an account</a>.</p>
   </div>
-  <br>
-    <button class="btn btn-primary" type="submit">Login</button>
-    <a href="{% url 'reset_password' %}">forgot password?</a>
-  </form>
-  <p class="text-center">Don't have an account? <a href="{% url 'register' %}">Create an account</a>.</p>
 </div>
-
-<!-- <div>
-  {% for message in messages %}
-  <h3>{{message}}</h3>
-  {% endfor %}
-</div> -->
 {% endblock %}
-
-

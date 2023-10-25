@@ -69,46 +69,65 @@
 <body>
 
 	<div class="d-flex flex-column min-vh-100">
+<!-- Navbar -->
+<nav class="navbar sticky-top navbar-expand-lg navbar-light bg-light shadow px-5">
+    <a class="navbar-brand" href="{% url 'store' %}"><b>BookStore</b></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
 
-	<nav class="navbar sticky-top navbar-expand-lg navbar-light bg-light shadow px-5">
-		<a class="navbar-brand" href="{% url 'store' %}"><b>BookStore</b></a>
-		<a class="navbar-brand" href="{% url 'home' %}"><b>Explore Books</b></a>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+        
+   
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownCategories" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Categories
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdownCategories">
+                    {% for category in categories %}
+                        <a class="dropdown-item" href="{% url 'category' category.slug %}">{{ category.name }}</a>
+                    {% endfor %}
+                </div>
+            </li>
+        </ul>
+        <ul class="navbar-nav ml-auto">
+            {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link">
+                        <strong>
+                            <i class="fas fa-user"></i>
+                            {{ user.username }}
+                        </strong>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'logout' %}">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{% url 'cart' %}" class="nav-link">
+                        <img id="cart-icon" src="{% static 'images/cart.png' %}">
+                    </a>
+                    <p id="cart-total"></p>
+                </li>
+            {% else %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'login' %}">
+                        <i class="fas fa-sign-in-alt"></i> Login
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'register' %}">
+                        <i class="fas fa-user-plus"></i> Register
+                    </a>
+                </li>
+            {% endif %}
+        </ul>
+    </div>
+</nav>
 
-		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-			<span class="navbar-toggler-icon"></span>
-		</button>
-
-	
-		<div class="collapse navbar-collapse" id="navbarSupportedContent">
-			<ul class="navbar-nav ml-auto">
-				{% if user.is_authenticated %}
-				<li class="nav-item">
-					<a class="nav-link">
-						<strong>
-							<i class="fas fa-user"></i>
-							{{ user.username }}
-						</strong>
-					</a>
-				</li>
-				<li class="nav-item">
-				<a class="nav-link" href="{% url 'logout' %}">
-					<i class="fas fa-sign-out-alt"></i> Logout</a>
-				</li>
-				<a href="{% url 'cart' %}">
-					<img  id="cart-icon" src="{% static 'images/cart.png' %}">
-				</a><p id="cart-total"></p>
-				{% else %}
-				<li class="nav-item">
-				<a class="nav-link" href="{% url 'login' %}">
-					<i class="fas fa-sign-in-alt"></i> Login</a>
-				</li>
-				<li class="nav-item">
-				<a class="nav-link" href="{% url 'register' %}">
-					<i class="fas fa-user-plus"></i> register</a>
-				{% endif %}
-			</ul>
-		</div>
-	</nav>
 <center>
 	{% if messages %}
     <div class="messages d-flex text-danger w-25">
@@ -119,7 +138,7 @@
         {% endfor %}
     </div>
     {% endif %}</center>
-    <div class="container flex-grow-1">
+    <div class="container-fluid flex-grow-1">
         {% block content %} {% endblock %}
     </div>
 
