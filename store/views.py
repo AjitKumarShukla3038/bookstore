@@ -116,6 +116,7 @@ def checkout(request):
 
     cart_items = Cart.objects.filter(user=request.user)
     user_default_address = ShippingAddress.objects.filter(user=request.user, is_default=True).first()
+    categories = Category.objects.all()
 
     cart_total = 0  
 
@@ -141,7 +142,7 @@ def checkout(request):
 
     
     
-    return render(request, 'store/checkout.html', {'cart_items': cart_items, 'cart_total': cart_total,'form': form,'user_default_address': user_default_address})
+    return render(request, 'store/checkout.html', {'cart_items': cart_items, 'cart_total': cart_total,'form': form,'user_default_address': user_default_address,'categories':categories})
     
 
 @login_required
@@ -207,12 +208,14 @@ def addtocart(request, product_id):
 def cart(request):
 
     cart_items = Cart.objects.filter(user=request.user)
+    categories = Category.objects.all()
+
     cart_total = 0  
 
     for item in cart_items:
         item.total_price = item.product.price * item.quantity  
         cart_total += item.total_price  
-    return render(request, 'store/cart.html', {'cart_items': cart_items, 'cart_total': cart_total})
+    return render(request, 'store/cart.html', {'cart_items': cart_items, 'cart_total': cart_total,'categories':categories})
 
 
 def update_cart(request, cart_item_id):

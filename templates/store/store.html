@@ -17,6 +17,7 @@
         padding: 10px 20px;
         width: 300px;
         margin-right: 10px;
+        margin-left: 10px;
     }
 
     .search-button {
@@ -44,13 +45,16 @@
         border-radius: 20px;
         margin-top: 10px;
     }
+
+
+    
 </style>
 
 <div class='container-fluid my-3 d-flex justify-content-center'>
     <!-- Search form -->
-    <h2 class="text-danger"><b>Search Books </b></h2>
+    <!-- <h2 class="text-danger"><b>Search Books </b></h2> -->
     <form class="form-inline my-2 ml-2 my-lg-0 search-form" role='search', method='get', action="{% url 'store' %}">
-        <input class="form-control mr-sm-2 search-input" name='search' type="search" placeholder="Find yours" aria-label="Search">
+        <input class="form-control mr-sm-2 search-input" name='search' type="search" placeholder="Search Books" aria-label="Search">
         <button class="btn btn-outline-success my-2 my-sm-0 search-button" type="submit">Search</button>
     </form>
 </div>

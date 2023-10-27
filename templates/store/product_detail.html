@@ -9,9 +9,9 @@
                 <img src="{{ product.imageURL }}" class="img-fluid" alt="{{ product.name }}">
             </div>
             <div class="col-md-8">
-                <h1>{{ product.name }}</h1>
-                <h2>{{ product.category}}</h2>
-                <h2>Author: {{ product.author }}</h2>
+                <h2>{{ product.name }}</h2>
+                <h3>{{ product.category}}</h3>
+                <h4>Author: {{ product.author }}</h4>
                 <p>Price: ${{ product.price }}</p>
                 <p>Description:{{ product.description }}</p>
                 <a  class="btn btn-outline-dark" href="{% url 'store' %}">&#x2190; Back to Home</a>
