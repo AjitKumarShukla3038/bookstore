@@ -56,7 +56,10 @@ Access the Django admin panel at http://127.0.0.1:8000/admin/ and log in with th
 Customize your Django project by defining models, views, and templates. Configure URL patterns, handle forms, and set up your database models.
 
 
-
+### Update Setting
+In setting.py 
+EMAIL_HOST_USER = 'Use your Gmail '
+EMAIL_HOST_PASSWORD = 'Use you generated password'
 
 
 
